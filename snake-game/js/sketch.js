@@ -121,3 +121,110 @@ score = 0;
 gameStarted = true;
 loop();
 }
+
+function showSegments() {
+noFill();
+stroke(96, 255, 64);
+beginShape();
+for (let segment of segments) {
+    vertex(segment.x, segment.y);
+}
+endShape();
+}
+
+function updateSegments() {
+// Remove last segment
+segments.pop();
+
+// Copy current head of snake
+let head = segments[0].copy();
+
+// Insert the new snake head at the beginning of the array
+segments.unshift(head);
+
+// Adjust the head's position based on the current direction
+switch (direction) {
+    case 'right':
+    head.x = head.x + 1;
+    break;
+    case 'up':
+    head.y = head.y - 1;
+    break;
+    case 'left':
+    head.x = head.x - 1;
+    break;
+    case 'down':
+    head.y = head.y + 1;
+    break;
+}
+}
+
+function checkForCollision() {
+// Store first segment in array as head
+let head = segments[0];
+
+// If snake's head...
+if (
+    // hit right edge or
+    head.x >= gridWidth ||
+    // hit left edge or
+    head.x < 0 ||
+    // hit bottom edge or
+    head.y >= gridHeight ||
+    // hit top edge or
+    head.y < 0 ||
+    // collided with itself
+    selfColliding() === true
+) {
+    // show game over screen
+    gameOver();
+}
+}
+
+function gameOver() {
+noStroke();
+fill(32);
+rect(2, gridHeight / 2 - 5, gridWidth - 4, 12, 2);
+fill(255);
+
+// Set high score to whichever is larger: current score or previous high score
+highScore = max(score, highScore);
+
+// Put high score in local storage. This will be stored in browser data,
+// even after the user reloads the page.
+storeItem('high score', highScore);
+text(
+    `Game over!
+Your score: ${score}
+High score: ${highScore}
+Click to play again.`,
+    gridWidth / 2,
+    gridHeight / 2
+);
+
+gameStarted = false;
+noLoop();
+}
+
+function checkForCollision() {
+// Store first segment in array as head
+let head = segments[0];
+
+// If snake's head...
+if (
+    // hit right edge or
+    head.x >= gridWidth ||
+    // hit left edge or
+    head.x < 0 ||
+    // hit bottom edge or
+    head.y >= gridHeight ||
+    // hit top edge or
+    head.y < 0 ||
+    // collided with itself
+    selfColliding() === true
+) {
+    // show game over screen
+    gameOver();
+}
+}
+
