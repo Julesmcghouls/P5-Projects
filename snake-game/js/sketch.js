@@ -54,18 +54,19 @@ background(0);
 // Set scale so that the game grid fills canvas
 scale(width / gridWidth, height / gridHeight);
 if (gameStarted === false) {
-showStartScreen();
+    showStartScreen();
 } else {
-// Shift over so that snake and fruit are still on screen
-// when their coordinates are 0
-translate(0.5, 0.5);
-showFruit();
-showSegments();
-updateSegments();
-checkForCollision();
-checkForFruit();
+    // Shift over so that snake and fruit are still on screen
+    // when their coordinates are 0
+    translate(0.5, 0.5);
+    showFruit();
+    showSegments();
+    updateSegments();
+    checkForCollision();
+    checkForFruit(); 
 }
 }
+
 
 function showStartScreen() {
 noStroke();
@@ -228,3 +229,15 @@ if (
 }
 }
 
+function showFruit() {
+    stroke(255,64,32);
+    point(fruit.x, fruit.y);
+}
+
+function updateFruitCoordinates() {
+// Pick a random new coordinate for the fruit and round it down using floor().
+// Random values are between 0 and gridWidth/gridHeight.
+let x = floor(random(gridWidth));
+let y = floor(random(gridHeight));
+fruit = createVector(x, y);
+}
